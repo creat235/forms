@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Routine System</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff00cc, #333399, #00ffff, #00cc66, #ffcc00);
+      background-size: 500% 500%;
+      animation: gradientBG 12s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .container {
+      width: 780px;
+      min-height: 430px;
+      display: flex;
+      border-radius: 15px;
+      box-shadow: 0px 0px 25px cyan;
+      overflow: hidden;
+      background: rgba(0,0,0,0.85);
+    }
+
+    .login-box, .welcome-box {
+      flex: 1;
+      padding: 40px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .login-box h2, .welcome-box h1 {
+      margin-bottom: 25px;
+      color: cyan;
+      text-shadow: 0px 0px 10px cyan;
+    }
+
+    .input-box {
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .input-box input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      outline: none;
+      background: transparent;
+      border-bottom: 2px solid cyan;
+      color: white;
+      font-size: 16px;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, cyan, #00ffcc, #00ccff);
+      border: none;
+      padding: 12px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      color: black;
+      font-weight: bold;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .btn:hover {
+      box-shadow: 0px 0px 15px #00ffff;
+    }
+
+    .hidden { display: none; }
+
+    /* Routine Box */
+    .routine-box {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(0,0,0,0.6);
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px cyan;
+      text-align: left;
+    }
+
+    .routine-box h3 {
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+
+    /* Back Button */
+    .back-btn {
+      margin-top: 20px;
+      background: linear-gradient(90deg, #ffcc00, #ff6699);
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Section -->
+  <div class="container" id="login-section">
+    <div class="login-box">
+      <h2>Login</h2>
+      <div class="input-box">
+        <input type="text" id="username" placeholder="Username" required>
+      </div>
+      <div class="input-box">
+        <input type="password" id="password" placeholder="Password (242002 - 242040)" required>
+      </div>
+      <button class="btn" onclick="login()">Login</button>
+      <p id="error" style="color:red; margin-top:10px;"></p>
+    </div>
+  </div>
+
+  <!-- Welcome Section -->
+  <div class="container hidden" id="welcome-section">
+    <div class="welcome-box">
+      <h1>Khulna University</h1>
+      <h2>Statistics Routine Form</h2>
+      <button class="btn" onclick="showRoutine()">See Routine</button>
+
+      <div id="routine" class="routine-box hidden">
+        <h3>📅 Routine</h3>
+        <p><b>Sunday:</b> Probability Theory - 10:00 AM</p>
+        <p><b>Tuesday:</b> Statistics Lab - 2:00 PM</p>
+        <p><b>Thursday:</b> Discrete Math - 11:30 AM</p>
+        <button class="btn back-btn" onclick="logout()">🔙 Back to Login</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      let username = document.getElementById("username").value;
+      let password = parseInt(document.getElementById("password").value);
+      let errorMsg = document.getElementById("error");
+
+      if (password >= 242002 && password <= 242040) {
+        // Save login info in localStorage
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("welcome-section").classList.remove("hidden");
+      } else {
+        errorMsg.textContent = "❌ Invalid Password! Only 242002 - 242040 allowed.";
+      }
+    }
+
+    function showRoutine() {
+      document.getElementById("routine").classList.remove("hidden");
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      document.getElementById("routine").classList.add("hidden");
+      document.getElementById("welcome-section").classList.add("hidden");
+      document.getElementById("login-section").classList.remove("hidden");
+    }
+
+    // Auto login if already saved
+    window.onload = function() {
+      if (localStorage.getItem("loggedIn") === "true") {
+        document.getElementById("login-section").classList.add("hidden");
+        document.getElementById("welcome-section").classList.remove("hidden");
+      }
+    }
+  </script>
+
+</body>
+</html>
